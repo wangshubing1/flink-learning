@@ -1,0 +1,5 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea/
+flink-learning.iml
+flink-learning-examples.iml
+src/
