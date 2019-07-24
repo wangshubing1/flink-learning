@@ -2,4 +2,5 @@
 .idea/
 flink-learning.iml
 flink-learning-examples.iml
-src/
+.gitignore
+
