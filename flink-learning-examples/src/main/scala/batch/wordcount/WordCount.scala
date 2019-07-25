@@ -1,8 +1,8 @@
-package batch
+package batch.wordcount
 
-import org.apache.flink.api.scala._
 import org.apache.flink.api.java.utils.ParameterTool
-
+import org.apache.flink.api.scala.ExecutionEnvironment
+import org.apache.flink.api.scala._
 
 /**
   * @Author: king

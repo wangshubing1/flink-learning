@@ -1,4 +1,4 @@
-package batch;
+package batch.wordcount;
 
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
