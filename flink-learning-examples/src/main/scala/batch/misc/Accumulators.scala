@@ -19,7 +19,6 @@ object Accumulators {
     val params: ParameterTool = ParameterTool.fromArgs(args)
     val env = ExecutionEnvironment.getExecutionEnvironment
     env.getConfig.setGlobalJobParameters(params)
-    //val dataSource = env.fromCollection(WordCountData.WORDS)
     val data = env.fromCollection(WordCountData.WORDS)
     val counts = data.flatMap(_.toLowerCase.split("\\W+"))
       .map(new RichMapFunction[String, String] {
@@ -28,9 +27,8 @@ object Accumulators {
         override def open(parameters: Configuration): Unit = {
           getRuntimeContext.addAccumulator("my-accumulator", counter)
         }
-
         override def map(in: String): String = {
-          counter.add(1)
+          this.counter.add(1)
           in
         }
       }).map((_, 1))
