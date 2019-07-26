@@ -10,7 +10,7 @@ import scala.concurrent.{ExecutionContext, Future}
 /**
   * @Author: king
   * @Date: 2019-07-25
-  * @Desc: TODO 
+  * @Desc: TODO  异步通信
   */
 
 object AsyncIOExample {
@@ -26,8 +26,7 @@ object AsyncIOExample {
     asyncMapped.print()
     env.execute("Async I/O job")
   }
-}
-class SimpleSource extends ParallelSourceFunction[Int]{
+  class SimpleSource extends ParallelSourceFunction[Int]{
     var runing =true
     var counter = 0
     override def run(sourceContext: SourceFunction.SourceContext[Int]): Unit = {
@@ -44,4 +43,6 @@ class SimpleSource extends ParallelSourceFunction[Int]{
       runing =false
     }
   }
+}
+
 
