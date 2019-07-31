@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
  * @Desc: TODO 如何使用{ @link AsyncFunction}
  */
 
-public class AsyncIOExample {
+public class AsyncIOExampleJava {
     private static final Logger LOG = LoggerFactory.getLogger(AsyncIOExample.class);
     private static final String EXACTLY_ONCE_MODE = "exactly_once";
     private static final String EVENT_TIME = "EventTime";

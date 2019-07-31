@@ -11,6 +11,8 @@
 
     <modules>
         <module>flink-learning-examples</module>
+        <module>flink-learning-template</module>
+        <module>flink-learning-common</module>
     </modules>
 
     <properties>
@@ -39,17 +41,13 @@
         <!--加入下面两个依赖才会出现 Flink 的日志出来-->
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.25</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.25</version>
+            <scope>compile</scope>
         </dependency>
-    </dependencies>
+</dependencies>
 
-    <!-- This profile helps to make things run out of the box in IntelliJ -->
+<!-- This profile helps to make things run out of the box in IntelliJ -->
     <!-- Its adds Flink's core classes to the runtime class path. -->
     <!-- Otherwise they are missing in IntelliJ, because the dependency is 'provided' -->
     <profiles>
@@ -65,7 +63,7 @@
             <dependencies>
                 <dependency>
                     <groupId>org.apache.flink</groupId>
-                    <artifactId>flink-streaming-java_${scala.binary.version}</artifactId>
+                    <artifactId>flink-examples.streaming-java_${scala.binary.version}</artifactId>
                     <version>${flink.version}</version>
                     <scope>compile</scope>
                 </dependency>
