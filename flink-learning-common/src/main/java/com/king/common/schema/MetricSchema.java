@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.king.common.model.MetricEvent;
 import org.apache.flink.api.common.serialization.DeserializationSchema;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
-import org.apache.flink.streaming.util.serialization.SerializationSchema;
+import org.apache.flink.api.common.serialization.SerializationSchema;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
