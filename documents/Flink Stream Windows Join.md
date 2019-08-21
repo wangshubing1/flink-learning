@@ -22,8 +22,8 @@ stream.join(otherStream)
 如图所示，我们定义了一个大小为2毫秒的翻滚窗口，这导致了窗体的窗口[0,1], [2,3], ...。图像显示了每个窗口中所有元素的成对组合，这些元素将被传递给JoinFunction。请注意，在翻滚窗口中[6,7]没有任何东西被发射，因为绿色流中不存在与橙色元素⑥和⑦连接的元素。
 ```java
 import org.apache.flink.api.java.functions.KeySelector;
-import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
-import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.examples.streaming.api.windowing.assigners.TumblingEventTimeWindows;
+import org.apache.flink.examples.streaming.api.windowing.time.Time;
  
 ...
 
@@ -46,8 +46,8 @@ orangeStream.join(greenStream)
 在这个例子中，我们使用大小为2毫秒的滑动窗口并将它们滑动一毫秒，从而产生滑动窗口[-1, 0],[0,1],[1,2],[2,3], …。x轴下方的连接元素是传递给JoinFunction每个滑动窗口的元素。在这里，您还可以看到橙色②如何与窗口中的绿色③ [2,3]连接，但未与窗口中的任何内容连接[1,2]。
 ```java
 import org.apache.flink.api.java.functions.KeySelector;
-import org.apache.flink.streaming.api.windowing.assigners.SlidingEventTimeWindows;
-import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.examples.streaming.api.windowing.assigners.SlidingEventTimeWindows;
+import org.apache.flink.examples.streaming.api.windowing.time.Time;
 
 ...
 
@@ -71,8 +71,8 @@ orangeStream.join(greenStream)
 ```java
 
 import org.apache.flink.api.java.functions.KeySelector;
-import org.apache.flink.streaming.api.windowing.assigners.EventTimeSessionWindows;
-import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.examples.streaming.api.windowing.assigners.EventTimeSessionWindows;
+import org.apache.flink.examples.streaming.api.windowing.time.Time;
  
 ...
 
@@ -95,8 +95,8 @@ orangeStream.join(greenStream)
 在上面的例子中，我们连接两个流'orange'和'green'，下限为-2毫秒，上限为+1毫秒。缺省情况下，这些界限是包容性的，但.lowerBoundExclusive()并.upperBoundExclusive可以应用到改变行为。再次使用更正式的表示法，这将转化为orangeElem.ts + lowerBound &lt;= greenElem.ts &lt;= orangeElem.ts + upperBound如三角形所示。
 ```java
 import org.apache.flink.api.java.functions.KeySelector;
-import org.apache.flink.streaming.api.functions.co.ProcessJoinFunction;
-import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.examples.streaming.api.functions.co.ProcessJoinFunction;
+import org.apache.flink.examples.streaming.api.windowing.time.Time;
 
 ...
 

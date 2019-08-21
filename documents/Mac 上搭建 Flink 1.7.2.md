@@ -46,10 +46,10 @@ http://localhost:8081
 创建一个 SocketTextStreamWordCount 文件，加入以下代码：
 
 ```scala
-package com.king.learn.Flink.streaming.wordcount
+package com.king.learn.Flink.examples.streaming.wordcount
 
 
-import org.apache.flink.streaming.api.scala._
+import org.apache.flink.examples.streaming.api.scala._
 import org.apache.flink.util.Collector
 
 /**
@@ -212,7 +212,7 @@ nc -l 9000
 
 
 ```
-./flink run -c com.king.learn.Flink.streaming.wordcount.SocketTextStreamWordCount /Volumes/mydisk/Projects/IdeaProjects/flink-learn/target/original-flink-learn-1.0-SNAPSHOT.jar 127.0.0.1 9000
+./flink run -c com.king.learn.Flink.examples.streaming.wordcount.SocketTextStreamWordCount /Volumes/mydisk/Projects/IdeaProjects/flink-learn/target/original-flink-learn-1.0-SNAPSHOT.jar 127.0.0.1 9000
 ```
 > 注意自己的文件路径
 

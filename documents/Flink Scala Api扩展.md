@@ -9,7 +9,7 @@ import org.apache.flink.api.scala.extensions._
 ```
 #### DataStream API:
 ```scala
-import org.apache.flink.streaming.api.scala.extensions._
+import org.apache.flink.examples.streaming.api.scala.extensions._
 ```
 > 注意！#Scala Api中经常会在编译期出现类型的检查异常,还需要导入
 ```scala
