@@ -1,4 +1,4 @@
-package com.king.kudu.serde;
+package com.king.common.model;
 
 /**
  * @Author: king
@@ -38,8 +38,7 @@ public class TestPojo {
     public String toString() {
         return "TestPojo{" +
                 "id=" + id +
-                ", name='" + name +
-                ", type=" +type +'\''+
+                ", name='" + name + '\'' +
                 '}';
     }
 }
