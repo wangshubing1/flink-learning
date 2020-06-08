@@ -2,20 +2,28 @@ package com.king.kudu.example;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
 import com.king.common.util.ExecutionEnvUtil;
-import com.king.kudu.KuduSink;
-import com.king.kudu.connector.KuduColumnInfo;
+
 import com.king.kudu.connector.KuduTableInfo;
-import com.king.kudu.serde.TestPojo;
+import com.king.kudu.streaming.KuduSink;
+import com.king.kudu.table.KuduTableSink;
+import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
-import org.apache.kudu.Type;
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.flink.table.api.java.StreamTableEnvironment;
+import org.apache.flink.table.descriptors.Kafka;
+import org.apache.flink.util.Collector;
+
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 
@@ -27,45 +35,41 @@ import java.util.Properties;
 
 public class KuduSinkTest {
     public static void main(String[] args) throws Exception {
-        final ParameterTool parameterTool = ExecutionEnvUtil.createParameterTool(args);
-        StreamExecutionEnvironment env = ExecutionEnvUtil.prepare(parameterTool);
-        Properties props = new Properties();
-        props.setProperty("bootstrap.servers", "10.9.251.30:9092,10.9.251.31:9092,10.9.251.32:9092");
-        props.setProperty("group.id", "king_test1");
-       /* Properties props = new Properties();
-        props.setProperty("bootstrap.servers", "10.9.251.30:9092,10.9.251.31:9092,10.9.251.32:9092");
-        props.setProperty("group.id","king_test1");*/
-        DataStream<String> data = env.addSource(
-                new FlinkKafkaConsumer<String>(
-                        "king_ogg_test5",
-                        new SimpleStringSchema(),
-                        props
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        /*StreamTableEnvironment sTableENV=StreamTableEnvironment.create(env);
+        sTableENV.connect(
+                new Kafka()
+                        .version("0.11")
+                        .topic("kafka_flink_kudu")
+                        .startFromLatest()
+                        .property("bootstrap.servers", "szsjhl-cdh-test-10-9-251-30.belle.lan:9092,szsjhl-cdh-test-10-9-251-31.belle.lan:9092,szsjhl-cdh-test-10-9-251-32.belle.lan:9092")
+                        //.property("zookeeper.connect", "szsjhl-cdh-test-10-9-251-30.belle.lan:2181,szsjhl-cdh-test-10-9-251-31.belle.lan:2181,szsjhl-cdh-test-10-9-251-32.belle.lan:2181")
+                        .property("group.id", "kafka_flink_kudu_group"))
+                        .withFormat(
+                                new Json()
+                        );*/
+        Properties properties = new Properties();
+        properties.setProperty("bootstrap.servers", "szsjhl-cdh-test-10-9-251-30.belle.lan:9092,szsjhl-cdh-test-10-9-251-31.belle.lan:9092,szsjhl-cdh-test-10-9-251-32.belle.lan:9092");
+        properties.setProperty("zookeeper.connect", "szsjhl-cdh-test-10-9-251-30.belle.lan:2181,szsjhl-cdh-test-10-9-251-31.belle.lan:2181,szsjhl-cdh-test-10-9-251-32.belle.lan:2181");
+        properties.setProperty("group.id", "kafka_flink_kudu_group");
+        properties.setProperty("auto.offset.reset", "earliest");
+        DataStream<String> stream = env
+                .addSource(new FlinkKafkaConsumer<>("kafka_flink_kudu", new SimpleStringSchema(), properties));
+        //KuduTableInfo tableInfo =KuduTableInfo.
+        //stream.print();
+        SingleOutputStreamOperator<Object> mapSource = stream.map(s -> {
+            Map<String, Object> map = new HashMap<String, Object>();
+            JSONObject jsonObject = JSON.parseObject(JSON.parseObject(s).get("Data").toString());
+            map.put("id", jsonObject.getInteger("id"));
+            map.put("name", jsonObject.getString("name"));
+            map.put("age", jsonObject.getInteger("age"));
+            map.put("gender", jsonObject.getInteger("gender"));
+            map.put("address", jsonObject.getString("address"));
+            map.put("height", jsonObject.getDouble("height"));
+            return map;
+        });
+        //mapSource.addSink(new KuduSink<>());
 
-                )
-        );
-        //System.out.println(data.toString());
-        List<KuduColumnInfo> kuduColumnInfoList = new ArrayList<>();
-        KuduColumnInfo columnInfo1 = KuduColumnInfo.Builder.createInteger("id").rangeKey(true).build();
-        KuduColumnInfo columnInfo2 = KuduColumnInfo.Builder.createInteger("type").build();
-        KuduColumnInfo columnInfo3 = KuduColumnInfo.Builder.createString("name").build();
-        kuduColumnInfoList.add(columnInfo1);
-        kuduColumnInfoList.add(columnInfo2);
-        kuduColumnInfoList.add(columnInfo3);
-        //KuduColumnInfo columnInfo1 = KuduColumnInfo.Builder
-        KuduTableInfo kuduTableInfo = new KuduTableInfo.Builder("king_kudu")
-                .addColumn(KuduColumnInfo.Builder.create("id", Type.INT32).key(true).hashKey(true).build())
-                .addColumn(KuduColumnInfo.Builder.create("type", Type.INT32).build())
-                .addColumn(KuduColumnInfo.Builder.create("name", Type.STRING).build())
-                .build();
-        /*data.addSink(new KuduSink<MetricEvent>("szsjhl-cdh-test-10-9-251-32.belle.lan",
-                kuduTableInfo,new PojoSerDe<>(MetricEvent.class)).withStrongConsistency());
-
-        env.execute();*/
-        data.addSink(new KuduSink<String>("10.9.251.32",
-                kuduTableInfo,TestPojo.class).withStrongConsistency());
-
-       /* .addSink(new KuduSink<>("szsjhl-cdh-test-10-9-251-32.belle.lan"
-                ,kuduTableInfo,TestPojo.class));*/
         env.execute();
 
     }

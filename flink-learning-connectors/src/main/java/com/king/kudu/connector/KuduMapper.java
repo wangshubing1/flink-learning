@@ -12,7 +12,7 @@ import org.apache.kudu.client.RowResult;
  * @Date: 2019-08-27
  * @Desc: TODO
  */
-
+@Deprecated
 public class KuduMapper {
     private KuduMapper() {
     }

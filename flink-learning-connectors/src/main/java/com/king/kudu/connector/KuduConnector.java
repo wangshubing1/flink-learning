@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @Date: 2019-08-27
  * @Desc: TODO
  */
-
+@Deprecated
 public class KuduConnector implements AutoCloseable {
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 

@@ -10,7 +10,7 @@ import org.apache.kudu.client.RowResultIterator;
  * @Date: 2019-08-27
  * @Desc: TODO
  */
-
+@Deprecated
 public class KuduRowIterator {
     private KuduScanner scanner;
     private RowResultIterator rowIterator;

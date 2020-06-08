@@ -1,17 +1,14 @@
 package com.king.kudu.connector;
 
-
 import org.apache.commons.lang3.Validate;
-import org.apache.kudu.ColumnSchema;
 import org.apache.kudu.Schema;
 import org.apache.kudu.client.CreateTableOptions;
-
 import java.io.Serializable;
 
 
 /**
  * @Author: king
- * @Date: 2019-08-27
+ * @Date: 2020-06-08
  * @Desc: TODO
  */
 

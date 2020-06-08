@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @Date: 2019-08-26
  * @Desc: TODO
  */
-
+@Deprecated
 public class KuduColumnInfo implements Serializable {
     private String name;
     private Type type;

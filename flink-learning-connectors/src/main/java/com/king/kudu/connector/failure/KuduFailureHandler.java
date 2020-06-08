@@ -7,7 +7,11 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
-
+/**
+ * @Author: king
+ * @Date: 2020-06-08
+ * @Desc: TODO
+ */
 @PublicEvolving
 public interface KuduFailureHandler extends Serializable {
 

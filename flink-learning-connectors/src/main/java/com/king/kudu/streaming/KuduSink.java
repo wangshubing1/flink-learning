@@ -1,19 +1,4 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
 package com.king.kudu.streaming;
 
 import com.king.kudu.connector.KuduTableInfo;
@@ -47,25 +32,24 @@ public class KuduSink<IN> extends RichSinkFunction<IN> implements CheckpointedFu
     private transient KuduWriter kuduWriter;
 
     /**
-     * Creates a new {@link KuduSink} that will execute operations against the specified Kudu table (defined in {@link KuduTableInfo})
+     * 对指定的kudu表进行操作
      * for the incoming stream elements.
      *
-     * @param writerConfig Writer configuration
-     * @param tableInfo    Table information for the target table
-     * @param opsMapper    Mapping logic from inputs to Kudu operations
+     * @param writerConfig 写入配置
+     * @param tableInfo    目标表信息
+     * @param opsMapper    输入kudu的映射逻辑
      */
     public KuduSink(KuduWriterConfig writerConfig, KuduTableInfo tableInfo, KuduOperationMapper<IN> opsMapper) {
         this(writerConfig, tableInfo, opsMapper, new DefaultKuduFailureHandler());
     }
 
     /**
-     * Creates a new {@link KuduSink} that will execute operations against the specified Kudu table (defined in {@link KuduTableInfo})
-     * for the incoming stream elements.
+     * 对指定的kudu表进行操作
      *
-     * @param writerConfig   Writer configuration
-     * @param tableInfo      Table information for the target table
-     * @param opsMapper      Mapping logic from inputs to Kudu operations
-     * @param failureHandler Custom failure handler instance
+     * @param writerConfig   写入配置
+     * @param tableInfo      目标表信息
+     * @param opsMapper      输入kudu的映射逻辑
+     * @param failureHandler 自定义故障处理实例
      */
     public KuduSink(KuduWriterConfig writerConfig, KuduTableInfo tableInfo, KuduOperationMapper<IN> opsMapper, KuduFailureHandler failureHandler) {
         this.tableInfo = checkNotNull(tableInfo, "tableInfo could not be null");

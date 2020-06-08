@@ -15,7 +15,7 @@ import java.util.stream.Stream;
  * @Date: 2019-08-27
  * @Desc: TODO
  */
-
+@Deprecated
 public class KuduRow extends Row {
     private Map<String, Integer> rowNames;
 
