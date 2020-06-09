@@ -57,7 +57,7 @@ public class KuduSinkTest {
                 .addSource(new FlinkKafkaConsumer<>("kafka_flink_kudu", new SimpleStringSchema(), properties));
         //KuduTableInfo tableInfo =KuduTableInfo.
         //stream.print();
-        SingleOutputStreamOperator<Object> mapSource = stream.map(s -> {
+        SingleOutputStreamOperator<Map<String,Object>> mapSource = stream.map(s -> {
             Map<String, Object> map = new HashMap<String, Object>();
             JSONObject jsonObject = JSON.parseObject(JSON.parseObject(s).get("Data").toString());
             map.put("id", jsonObject.getInteger("id"));
@@ -68,7 +68,9 @@ public class KuduSinkTest {
             map.put("height", jsonObject.getDouble("height"));
             return map;
         });
-        //mapSource.addSink(new KuduSink<>());
+        String kuduMaster="";
+        String tableInfo="tablename";
+        mapSource.addSink(new SinkKudu(kuduMaster,tableInfo));
 
         env.execute();
 
