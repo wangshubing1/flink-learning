@@ -3,24 +3,12 @@ package com.king.kudu.example;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.google.gson.JsonObject;
-import com.king.common.util.ExecutionEnvUtil;
-
-import com.king.kudu.connector.KuduTableInfo;
-import com.king.kudu.streaming.KuduSink;
-import com.king.kudu.table.KuduTableSink;
-import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
-import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
-import org.apache.flink.table.api.java.StreamTableEnvironment;
-import org.apache.flink.table.descriptors.Kafka;
-import org.apache.flink.util.Collector;
-
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,22 +45,27 @@ public class KuduSinkTest {
                 .addSource(new FlinkKafkaConsumer<>("kafka_flink_kudu", new SimpleStringSchema(), properties));
         //KuduTableInfo tableInfo =KuduTableInfo.
         //stream.print();
-        SingleOutputStreamOperator<Map<String,Object>> mapSource = stream.map(s -> {
-            Map<String, Object> map = new HashMap<String, Object>();
-            JSONObject jsonObject = JSON.parseObject(JSON.parseObject(s).get("Data").toString());
-            map.put("id", jsonObject.getInteger("id"));
-            map.put("name", jsonObject.getString("name"));
-            map.put("age", jsonObject.getInteger("age"));
-            map.put("gender", jsonObject.getInteger("gender"));
-            map.put("address", jsonObject.getString("address"));
-            map.put("height", jsonObject.getDouble("height"));
-            return map;
-        });
-        String kuduMaster="";
-        String tableInfo="tablename";
+        SingleOutputStreamOperator<Map<String,Object>> mapSource = stream.map(new MyTuple2Mapper());
+        String kuduMaster="szsjhl-cdh-test-10-9-251-32.belle.lan:7051,szsjhl-cdh-test-10-9-251-33.belle.lan:7051,szsjhl-cdh-test-10-9-251-34.belle.lan:7051";
+        String tableInfo="impala::king_db.user_info";
         mapSource.addSink(new SinkKudu(kuduMaster,tableInfo));
 
         env.execute();
 
     }
+public static class MyTuple2Mapper implements MapFunction<String, Map<String, Object>> {
+    @Override
+    public Map<String, Object> map(String s) throws Exception {
+        JSONObject jsonObject = JSON.parseObject(JSON.parseObject(s).get("Data").toString());
+        Map<String, Object> map = new HashMap<String, Object>();
+        System.out.println(jsonObject.toString());
+        map.put("id", jsonObject.getInteger("id"));
+        map.put("name", jsonObject.getString("name"));
+        map.put("age", jsonObject.getInteger("age"));
+        map.put("gender", jsonObject.getInteger("gender"));
+        map.put("address", jsonObject.getString("address"));
+        map.put("height", jsonObject.getDouble("height"));
+        return map;
+    }
+}
 }
