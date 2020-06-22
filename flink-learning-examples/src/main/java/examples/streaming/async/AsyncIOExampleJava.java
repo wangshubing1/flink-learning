@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class AsyncIOExampleJava {
-    private static final Logger LOG = LoggerFactory.getLogger(AsyncIOExample.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AsyncIOExampleJava.class);
     private static final String EXACTLY_ONCE_MODE = "exactly_once";
     private static final String EVENT_TIME = "EventTime";
     private static final String INGESTION_TIME = "IngestionTime";
