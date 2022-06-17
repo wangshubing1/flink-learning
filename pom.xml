@@ -80,7 +80,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.39</version>
+            <version>1.2.83</version>
         </dependency>
         <!--加入下面两个依赖才会出现 Flink 的日志出来-->
         <dependency>
